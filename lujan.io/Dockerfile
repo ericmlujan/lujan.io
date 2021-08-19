@@ -9,7 +9,7 @@ RUN bundle install
 
 COPY . .
 
-ENV LANG C.UTF-8
+ENV LANG="C.UTF-8"
 ENV RACK_ENV="production"
 
 # Run server on port 3000
