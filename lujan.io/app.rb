@@ -3,18 +3,19 @@ require_relative 'view'
 
 class App
   def initialize()
-    @router = Router.new do
-      view = View.new('./views')
+    @router =
+      Router.new do
+        view = View.new('./views')
 
-      static './public'
+        static './public'
 
-      redirect '/blm', 'https://docs.google.com/spreadsheets/d/1BSYzGR25aCFpNa2vZRmI8AeN5V5FTamYtLAYyVGvE3s/edit'
+        redirect '/blm',
+                 'https://docs.google.com/spreadsheets/d/1BSYzGR25aCFpNa2vZRmI8AeN5V5FTamYtLAYyVGvE3s/edit'
 
-      get '/' do
-        view.render :index
+        get '/' do
+          view.render :index
+        end
       end
-
-    end
   end
 
   def call(env)
@@ -24,4 +25,4 @@ class App
   end
 end
 
-APP = App.new 
+APP = App.new

@@ -1,19 +1,15 @@
 class View
   def initialize(view_path)
-    @view_path = File.absolute_path(view_path.gsub(/^\//, ""))
+    @view_path = File.absolute_path(view_path.gsub(%r{^\/}, ''))
 
-    if !@view_path.end_with?('/')
-      @view_path << '/'
-    end
+    @view_path << '/' if !@view_path.end_with?('/')
   end
 
   def render(name)
-    path = @view_path + name.to_s + ".html"
+    path = @view_path + name.to_s + '.html'
 
-    body = ""
-    File.open(path, "r") do |file|
-      body = file.read
-    end
+    body = ''
+    File.open(path, 'r') { |file| body = file.read }
     return body
   end
 end

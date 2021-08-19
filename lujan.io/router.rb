@@ -1,7 +1,7 @@
 require 'webrick'
 
 class Router
-  SUPPORTED_METHODS = ['GET', 'POST', 'PUT', 'DELETE']
+  SUPPORTED_METHODS = %w[GET POST PUT DELETE]
   def initialize(&block)
     @static_dirs = []
     @redirects = []
@@ -35,7 +35,7 @@ class Router
         return response
       end
     end
-    Rack::Response.new("not found", 404)
+    Rack::Response.new('not found', 404)
   end
 
   def get(path, &block)
@@ -74,10 +74,10 @@ class Router
       content = block.call(request, response)
       response.write(content)
     end
-    
+
     def method_match?(request)
       if !SUPPORTED_METHODS.include?(request.request_method) ||
-         !SUPPORTED_METHODS.include?(method)
+           !SUPPORTED_METHODS.include?(method)
         return false
       end
       return request.request_method == method
@@ -86,9 +86,7 @@ class Router
 
   class StaticPath < Struct.new(:path)
     def fetch(request)
-      if request.request_method != "GET"
-        return nil 
-      end
+      return nil if request.request_method != 'GET'
 
       requested_file = File.join(path, request.path)
       if File.exist?(requested_file) && !File.directory?(requested_file)
@@ -99,8 +97,12 @@ class Router
     end
 
     def infer_type(filename)
-      return WEBrick::HTTPUtils::mime_type(filename, WEBrick::HTTPUtils::DefaultMimeTypes)
+      return(
+        WEBrick::HTTPUtils.mime_type(
+          filename,
+          WEBrick::HTTPUtils::DefaultMimeTypes
+        )
+      )
     end
   end
 end
-
