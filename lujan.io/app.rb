@@ -1,3 +1,4 @@
+require_relative 'redirects'
 require_relative 'router'
 require_relative 'view'
 
@@ -9,12 +10,11 @@ class App
 
         static './public'
 
-        redirect '/blm',
-                 'https://docs.google.com/spreadsheets/d/1BSYzGR25aCFpNa2vZRmI8AeN5V5FTamYtLAYyVGvE3s/edit'
-
         get '/' do
           view.render :index
         end
+
+        Redirects::Redirects.each { |path, target| redirect path, target }
       end
   end
 
