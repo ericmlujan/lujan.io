@@ -6,15 +6,14 @@ class App
   def initialize()
     @router =
       Router.new do
+        Redirects::Redirects.each { |path, target| redirect path, target }
         view = View.new('./views')
 
         static './public'
 
         get '/' do
-          view.render :index
+          view.render :index, {template: :main}
         end
-
-        Redirects::Redirects.each { |path, target| redirect path, target }
       end
   end
 
