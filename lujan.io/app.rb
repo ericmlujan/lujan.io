@@ -12,7 +12,7 @@ class App
         static './public'
 
         get '/' do
-          view.render :index, {template: :main}
+          view.render :index, { template: :main }
         end
       end
   end

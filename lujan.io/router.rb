@@ -1,4 +1,4 @@
-require 'webrick'
+require 'mime/types'
 
 class Router
   SUPPORTED_METHODS = %w[GET POST PUT DELETE]
@@ -14,7 +14,7 @@ class Router
       content = dir.fetch(request)
       if content
         response = Rack::Response.new
-        response.content_type = dir.infer_type(request.path)
+        response.content_type = MIME::Types.type_for(request.path).first.to_s
         response.write(content)
         return response
       end
@@ -72,6 +72,7 @@ class Router
 
     def call(request, response)
       content = block.call(request, response)
+      response.content_type = 'text/html'
       response.write(content)
     end
 
@@ -94,15 +95,6 @@ class Router
       else
         return nil
       end
-    end
-
-    def infer_type(filename)
-      return(
-        WEBrick::HTTPUtils.mime_type(
-          filename,
-          WEBrick::HTTPUtils::DefaultMimeTypes
-        )
-      )
     end
   end
 end
