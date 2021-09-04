@@ -17,4 +17,5 @@ jobs:
         with:
           ruby-version: 3.0.2
           bundler-cache: true
+          working-directory: lujan.io
       - run: bundle exec rspec spec
