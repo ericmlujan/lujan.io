@@ -2,14 +2,14 @@ name: rspec
 
 on: [push]
 
+defaults:
+  run:
+    working-directory: lujan.io
+
 jobs:
   build:
     name: rspec
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: lujan.io
 
     steps:
       - uses: actions/checkout@v2
