@@ -6,7 +6,8 @@ class Router
     @static_dirs = []
     @redirects = []
     @routes = []
-    instance_eval(&block)
+
+    instance_eval(&block) if block_given?
   end
 
   def route(request)
