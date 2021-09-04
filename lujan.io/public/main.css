@@ -78,6 +78,10 @@ ul.social {
   font-size: 10pt;
 }
 
+a.sitename {
+  text-decoration: none;
+}
+
 .nav {
   font-size: 11pt;
 }
