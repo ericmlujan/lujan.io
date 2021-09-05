@@ -37,10 +37,4 @@ RSpec.describe Router, '#route' do
       expect(response.body).to eq([body_text])
     end
   end
-
-  context 'This is a failing test!' do
-    it 'should fail no matter what' do
-      expect(2+2).to eq(5)
-    end
-  end
 end
