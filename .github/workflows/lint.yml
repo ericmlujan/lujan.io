@@ -1,0 +1,20 @@
+name: lint
+
+on: [push]
+
+defaults:
+  run:
+    working-directory: lujan.io
+
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: yarn add --dev prettier @prettier/plugin-ruby
+      - run: yarn exec prettier -c .
