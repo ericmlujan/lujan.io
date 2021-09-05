@@ -27,6 +27,14 @@ img {
   background-color: #202020;
   color: #efefef;
   margin: 0;
+  padding: 1rem 0 1rem 0;
+  font-size: 10pt;
+}
+
+.top-banner-border {
+  background: #3f5efb;
+  background: linear-gradient(90deg, #fc466b 0%, #3f5efb 100%);
+  padding-bottom: 2px;
 }
 
 .about-text p {
@@ -71,11 +79,6 @@ ul.social {
 .content {
   max-width: 80vw;
   margin: auto;
-}
-
-.top-banner {
-  padding: 1rem 0 1rem 0;
-  font-size: 10pt;
 }
 
 a.sitename {
