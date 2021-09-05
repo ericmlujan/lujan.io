@@ -2,10 +2,6 @@ name: lint
 
 on: [push]
 
-defaults:
-  run:
-    working-directory: lujan.io
-
 jobs:
   lint:
     name: lint
@@ -16,5 +12,5 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - run: yarn add --dev prettier @prettier/plugin-ruby
-      - run: yarn exec prettier -c .
+      - run: npm install --dev prettier @prettier/plugin-ruby
+      - run: npx prettier -c .
