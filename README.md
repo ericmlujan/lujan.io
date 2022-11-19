@@ -3,6 +3,7 @@
 Source code for the personal website of Eric Lujan (that's me).
 
 ![rspec](https://github.com/ericmlujan/lujan.io/actions/workflows/rspec.yml/badge.svg)
+![lint](https://github.com/ericmlujan/lujan.io/actions/workflows/lint.yml/badge.svg)
 
 ## What exactly have we got here?
 
