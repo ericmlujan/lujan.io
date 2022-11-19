@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 require_relative 'redirects'
 require_relative 'router'
 require_relative 'view'
 
 class App
-  def initialize()
+  def initialize
     @router =
       Router.new do
-        Redirects::Redirects.each { |path, target| redirect path, target }
+        Redirects::REDIRECTS.each { |path, target| redirect path, target }
         view = View.new('./views')
 
         static './public'
@@ -20,7 +22,7 @@ class App
   def call(env)
     request = Rack::Request.new(env)
     response = @router.route(request)
-    return response.finish
+    response.finish
   end
 end
 

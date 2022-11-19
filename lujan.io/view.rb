@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'erb'
 
 class View
@@ -8,8 +10,8 @@ class View
   end
 
   def initialize(view_path)
-    @view_path = File.absolute_path(view_path.gsub(%r{^\/}, ''))
-    @view_path << '/' if !@view_path.end_with?('/')
+    @view_path = File.absolute_path(view_path.gsub(%r{^/}, ''))
+    @view_path << '/' unless @view_path.end_with?('/')
 
     @views = {}
     @templates = {}
@@ -59,11 +61,11 @@ class View
   def page_render(name, options)
     renderer = ERB.new(@views[name])
 
-    if options.include? :locals
-      locals = options[:locals]
-    else
-      locals = {}
-    end
+    locals = if options.include? :locals
+               options[:locals]
+             else
+               {}
+             end
 
     renderer.result_with_hash(locals)
   end
@@ -72,7 +74,7 @@ class View
     page_content = page_render(name, options)
     template_renderer = ERB.new(@templates[template])
 
-    locals = { page_content: page_content }
+    locals = { page_content: }
     locals = locals.merge(options[:locals]) if options.include? :locals
 
     template_renderer.result_with_hash(locals)
