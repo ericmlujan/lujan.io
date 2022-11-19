@@ -6,11 +6,15 @@ jobs:
   lint:
     name: lint
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./lujan.io
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
         with:
-          node-version: "14"
-      - run: npm install --dev prettier @prettier/plugin-ruby
-      - run: npx prettier -c .
+          ruby-version: "3.1.2"
+          bundler-cache: true
+          working-directory: ./lujan.io
+      - run: bundle exec rubocop .

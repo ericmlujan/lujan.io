@@ -1,40 +1,42 @@
+# frozen_string_literal: true
+
 require 'mime/types'
 
 class Router
-  SUPPORTED_METHODS = %w[GET POST PUT DELETE]
-  def initialize(&block)
+  SUPPORTED_METHODS = %w[GET POST PUT DELETE].freeze
+  def initialize(&)
     @static_dirs = []
     @redirects = []
     @routes = []
 
-    instance_eval(&block) if block_given?
+    instance_eval(&) if block_given?
   end
 
   def route(request)
     @static_dirs.each do |dir|
       content = dir.fetch(request)
-      if content
-        response = Rack::Response.new
-        response.content_type = MIME::Types.type_for(request.path).first.to_s
-        response.write(content)
-        return response
-      end
+      next unless content
+
+      response = Rack::Response.new
+      response.content_type = MIME::Types.type_for(request.path).first.to_s
+      response.write(content)
+      return response
     end
 
     @redirects.each do |redirect|
-      if redirect.match(request)
-        response = Rack::Response.new
-        redirect.call(request, response)
-        return response
-      end
+      next unless redirect.match(request)
+
+      response = Rack::Response.new
+      redirect.call(request, response)
+      return response
     end
 
     @routes.each do |route|
-      if route.match(request)
-        response = Rack::Response.new
-        route.call(request, response)
-        return response
-      end
+      next unless route.match(request)
+
+      response = Rack::Response.new
+      route.call(request, response)
+      return response
     end
     Rack::Response.new('not found', 404)
   end
@@ -51,12 +53,12 @@ class Router
     @redirects << Redirect.new(path, redirect_uri)
   end
 
-  class Redirect < Struct.new(:path, :redirect_uri)
+  Redirect = Struct.new(:path, :redirect_uri) do
     def match(request)
-      return request.path == path
+      request.path == path
     end
 
-    def call(request, response)
+    def call(_request, response)
       redirect(redirect_uri, response)
     end
 
@@ -66,9 +68,9 @@ class Router
     end
   end
 
-  class Route < Struct.new(:method, :path, :block)
+  Route = Struct.new(:http_method, :path, :block) do
     def match(request)
-      return method_match?(request) && request.path == path
+      method_match?(request) && request.path == path
     end
 
     def call(request, response)
@@ -79,23 +81,22 @@ class Router
 
     def method_match?(request)
       if !SUPPORTED_METHODS.include?(request.request_method) ||
-           !SUPPORTED_METHODS.include?(method)
+         !SUPPORTED_METHODS.include?(http_method)
         return false
       end
-      return request.request_method == method
+
+      request.request_method == http_method
     end
   end
 
-  class StaticPath < Struct.new(:path)
+  StaticPath = Struct.new(:path) do
     def fetch(request)
       return nil if request.request_method != 'GET'
 
       requested_file = File.join(path, request.path)
-      if File.exist?(requested_file) && !File.directory?(requested_file)
-        return File.read(requested_file)
-      else
-        return nil
-      end
+      return File.read(requested_file) if File.exist?(requested_file) && !File.directory?(requested_file)
+
+      nil
     end
   end
 end
