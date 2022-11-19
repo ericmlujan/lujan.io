@@ -8,9 +8,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-ruby@v1
         with:
-          node-version: "14"
-      - run: npm install --dev prettier @prettier/plugin-ruby
-      - run: npx prettier -c .
+          ruby-version: "3.1.2"
+      - run: cd lujan.io
+      - run: bundle exec rubocop .
