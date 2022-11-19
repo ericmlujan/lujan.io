@@ -9,8 +9,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.1.2"
-      - run: cd lujan.io
-      - run: bundle exec rubocop .
+          bundler-cache: true
+      - run: bundle exec rubocop lujan.io/
