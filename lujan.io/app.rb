@@ -1,29 +1,22 @@
 # frozen_string_literal: true
 
+require 'sinatra'
+
 require_relative 'redirects'
-require_relative 'router'
 require_relative 'view'
 
-class App
-  def initialize
-    @router =
-      Router.new do
-        Redirects::REDIRECTS.each { |path, target| redirect path, target }
-        view = View.new('./views')
+class LujanIoApp < Sinatra::Base
+  view = View.new('./views')
 
-        static './public'
+  set :public_folder, "#{__dir__}/public"
 
-        get '/' do
-          view.render :index, { template: :main }
-        end
-      end
+  get '/' do
+    view.render :index, { template: :main }
   end
 
-  def call(env)
-    request = Rack::Request.new(env)
-    response = @router.route(request)
-    response.finish
+  Redirects::REDIRECTS.each do |path, target|
+    get path do
+      redirect to(target)
+    end
   end
 end
-
-APP = App.new
