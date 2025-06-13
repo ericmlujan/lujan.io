@@ -3,6 +3,6 @@
 module Redirects
   REDIRECTS = {
     '/blm' => 'https://libguides.mit.edu/racial-justice',
-    '/resume' => 'https://storage.googleapis.com/web-static.lujan.io/resume/resume-full.pdf'
+    '/resume' => 'https://static.lujan.io/resume/resume-full.pdf'
   }.freeze
 end
