@@ -1,0 +1,12 @@
+<div class="photo-header pixel-font">
+  <h1><%= photo[:name] %></h1>
+</div>
+
+<div class="photo-data">
+  <p><%= photo[:caption] %></p>
+  <p><strong>Album</strong> <a href="/photography/<%= photo[:album] %>"><%= photo[:album_name] %></a></p>
+</div>
+
+<div class="photo-hero">
+  <img src="<%= photo[:path] %>" alt="<%= photo[:alt] %>" />
+</div>
