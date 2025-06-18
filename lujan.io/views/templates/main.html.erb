@@ -1,64 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Eric Lujan</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="Eric Lujan is a software engineer working on robotics at Cruise. Before that they studied Electrical Engineering and Computer Science at MIT."
-    />
-    <link rel="stylesheet" href="/main.css" type="text/css" />
-  </head>
-  <body>
-      <div class="top-banner-border">
-    <div class="top-banner">
-      <div class="content">
-        <span
-          >Black lives matter.
-          <a href="https://lujan.io/blm" target="blank"
-            >Learn more about antiracism and racial justice.</span
-        >
-      </div>
-    </div>
-      </div>
+<%= common_head %>
 
+<body>
+  <div class="top-banner-border">
+  <div class="top-banner">
     <div class="content">
-      <div class="header">
-        <a href="/" class="sitename">Eric Lujan</a>
-        <div class="nav">
-          <ul class="social">
-            <li>
-              <a href="https://github.com/ericmlujan" target="blank">GitHub</a>
-            </li>
-            <li>
-              <a href="https://linkedin.com/in/ericmlujan" target="blank"
-                >LinkedIn</a
-              >
-            </li>
-            <li>
-              <a href="/resume" target="blank"
-                >Resume</a
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
+      <span
+        >Black lives matter.
+        <a href="https://lujan.io/blm" target="blank"
+          >Learn more about antiracism and racial justice.</span
+      >
+    </div>
+  </div>
+    </div>
 
-      <%= page_content %>
-
-      <div class="footer">
-        <div>
-          <span>&copy; <%= Time.new.year %> Eric Lujan. All rights reserved.</span>
-        </div>
-        <div class="oss">
-          <span
-            ><a href="https://github.com/ericmlujan/lujan.io" target="blank"
-              >This site is open source.</a
-            ></span
-          >
-        </div>
+  <div class="content">
+    <div class="header">
+      <a href="/" class="sitename">Eric Lujan</a>
+      <div class="nav">
+        <ul class="social">
+          <li>
+            <a href="https://github.com/ericmlujan" target="blank">GitHub</a>
+          </li>
+          <li>
+            <a href="https://linkedin.com/in/ericmlujan" target="blank"
+              >LinkedIn</a
+            >
+          </li>
+          <li>
+            <a href="/resume" target="blank"
+              >Resume</a
+            >
+          </li>
+        </ul>
       </div>
     </div>
-  </body>
+
+    <%= page_content %>
+
+    <%= common_footer %>
+  </div>
+</body>
 </html>

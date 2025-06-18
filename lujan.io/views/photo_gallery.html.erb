@@ -1,0 +1,27 @@
+<div class="gallery-content">
+
+  <div class="gallery-page-nav pixel-font">
+    <% unless prev_page.nil? %>
+      <a href="/photography?page=<%= prev_page %>">←Prev</a>
+    <% end %>
+
+    <% unless next_page.nil? %>
+      <a href="/photography?page=<%= next_page %>">Next→</a>
+    <% end %>
+  </div>
+
+  <div class="gallery-container">
+    <% photo_columns.each do |col| %>
+      <div class="gallery-column">
+      <% col.each do |photo| %>
+        <div class="gallery-photo">
+          <a href="/photography/<%= photo[:album] %>/<%= photo[:slug] %>">
+            <img src="<%= photo[:thumbnail_path] %>" />
+          </a>
+        </div>
+      <% end %>
+      </div>
+    <% end %>
+  </div>
+
+</div>
