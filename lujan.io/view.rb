@@ -20,36 +20,15 @@ class View
     @fragments = {}
 
     # Load views
-    Dir
-      .children(@view_path)
-      .each do |child|
-        if child.end_with? VIEW_EXTENSION
-          name = File.basename(child, VIEW_EXTENSION)
-          view(name)
-        end
-      end
+    load_views(@view_path)
 
     # Load templates
     template_path = File.join(@view_path, TEMPLATE_DIR)
-    Dir
-      .children(template_path)
-      .each do |child|
-        if child.end_with? VIEW_EXTENSION
-          name = File.basename(child, VIEW_EXTENSION)
-          template(name)
-        end
-      end
+    load_templates(template_path)
 
     # Load fragments
     fragment_path = File.join(@view_path, FRAGMENT_DIR)
-    Dir
-      .children(fragment_path)
-      .each do |child|
-        if child.end_with? FRAGMENT_EXTENSION
-          name = File.basename(child, FRAGMENT_EXTENSION)
-          fragment(name)
-        end
-      end
+    load_fragments(fragment_path)
   end
 
   def render(name, options = {})
@@ -61,6 +40,39 @@ class View
   end
 
   private
+
+  def load_views(view_path)
+    Dir
+      .children(view_path)
+      .each do |child|
+        if child.end_with? VIEW_EXTENSION
+          name = File.basename(child, VIEW_EXTENSION)
+          view(name)
+        end
+      end
+  end
+
+  def load_templates(template_path)
+    Dir
+      .children(template_path)
+      .each do |child|
+        if child.end_with? VIEW_EXTENSION
+          name = File.basename(child, VIEW_EXTENSION)
+          template(name)
+        end
+      end
+  end
+
+  def load_fragments(fragments_path)
+    Dir
+      .children(fragments_path)
+      .each do |child|
+        if child.end_with? FRAGMENT_EXTENSION
+          name = File.basename(child, FRAGMENT_EXTENSION)
+          fragment(name)
+        end
+      end
+  end
 
   def view(name)
     filepath = File.join(@view_path, name + VIEW_EXTENSION)
