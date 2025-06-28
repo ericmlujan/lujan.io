@@ -64,6 +64,7 @@ ul.social {
 }
 
 .header {
+  font-size: 12pt;
   margin: 1rem auto 1rem auto;
 }
 
@@ -86,11 +87,19 @@ a.sitename {
 }
 
 .nav {
-  font-size: 11pt;
+  font-size: 12pt;
 }
 
 .nav li {
   margin-top: 0.75rem;
+}
+
+.new-flag {
+  background-color: #ff4f00;
+  margin: 0 5px 0 5px;
+  padding: 1px 5px 1px 5px;
+  color: #ffffff;
+  font-size: 8pt;
 }
 
 @media (max-width: 768px) {
