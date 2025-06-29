@@ -38,6 +38,10 @@ class PhotosCache
 
     @last_refreshed = Time.now
 
+    # Clear cache
+    @albums = {}
+    @photos = []
+
     albums_ref = @firestore.col(FIRESTORE_ALBUMS_COL)
     albums = albums_ref.get
 
