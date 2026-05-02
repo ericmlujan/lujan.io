@@ -103,7 +103,7 @@ def process_photo(file, album_slug, position, max_idx)
 
   name    = exif.title.to_s.strip
   caption = (exif.description || exif.caption || '').to_s.strip
-  time    = exif.date_time_original&.iso8601
+  time    = exif.date_time_original
 
   if name.empty?
     warn "  WARNING: no Title set for #{File.basename(file)} — falling back to filename for slug and name"
@@ -142,7 +142,7 @@ def print_photo_summary(photo)
   puts "  slug:          #{photo[:slug]}"
   puts "  name:          #{photo[:name]}"
   puts "  caption:       #{photo[:caption].empty? ? '(none)' : photo[:caption]}"
-  puts "  time:          #{photo[:time] || '(none)'}"
+  puts "  time:          #{photo[:time]&.iso8601 || '(none)'}"
   puts "  aspect_ratio:  #{photo[:aspect_ratio]}"
   puts "  display_index: #{photo[:display_index]}"
   puts "  path:          #{photo[:path]}"
@@ -181,12 +181,11 @@ def process_photos(jpegs, opts, r2_client, base_idx)
 end
 
 def compute_album_time(photos_map, current_time:)
-  return Time.now.iso8601 if current_time
+  return Time.now if current_time
 
   photos_map.values
-            .filter_map { |p| p[:time] && Time.parse(p[:time]) }
-            .min
-            &.iso8601 || Time.now.iso8601
+            .filter_map { |p| p[:time] }
+            .min || Time.now
 end
 
 def write_album(firestore, opts, photos_map)
