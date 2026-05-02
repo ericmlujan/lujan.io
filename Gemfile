@@ -17,3 +17,11 @@ group :development do
   gem 'rspec', '~> 3.0'
   gem 'rubocop', '~> 1.39'
 end
+
+group :tools do
+  gem 'aws-sdk-s3'
+  gem 'dotenv'
+  gem 'mini_exiftool'
+  gem 'mini_magick'
+  gem 'nokogiri'
+end
