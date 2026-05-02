@@ -15,7 +15,7 @@ body {
 .photography-brand {
 	display: inline-block;
 	font-family: "Jersey 10", sans-serif;
-	margin: 1em 0 2em 0;
+	margin: 1em 0 2em 10vw;
 	color: grey;
 	background-color: #ff4f00;
 	padding: 1rem;
@@ -64,11 +64,106 @@ body {
 	margin-left: 1rem;
 }
 
+@media (max-width: 900px) {
+  .gallery-sizer,
+  .gallery-photo {
+    width: 49%;
+  }
+
+  .gallery-gutter-sizer {
+    width: 2%;
+  }
+
+  .gallery-page-nav a {
+    font-size: 16pt;
+  }
+
+  .oss {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .photography-content {
+    max-width: 100vw;
+    padding: 0 1rem;
+    box-sizing: border-box;
+  }
+
+  .gallery-sizer,
+  .gallery-photo {
+    width: 100%;
+  }
+
+  .gallery-gutter-sizer {
+    width: 0;
+  }
+
+  .gallery-photo {
+    margin-bottom: 1rem;
+  }
+
+  .photography-brand {
+    display: block;
+    margin: 0 0 1em 0;
+    padding: 1rem 1rem;
+  }
+
+  .photography-brand small {
+    font-size: 1.5rem;
+  }
+
+  .brand {
+    font-size: 2.0rem;
+  }
+
+  .gallery-page-nav {
+    margin-bottom: 0.5rem;
+  }
+
+  .gallery-page-nav a {
+    font-size: 16pt;
+    margin-left: 0.5rem;
+  }
+
+  .photo-header h1 {
+    font-size: 14pt;
+    margin-top: 0.5rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .photo-data p {
+    margin-top: 0;
+    font-size: 10pt;
+  }
+
+  .footer {
+    font-size: 8pt;
+    margin: 0.75rem 0;
+  }
+}
+
 .pixel-font {
 	font-family: "Jersey 10", sans-serif;
 }
 
+.photo-single {
+	display: flex;
+	flex-direction: column;
+}
+
+.photo-hero {
+	order: -1;
+}
+
 .photo-header h1 {
-	font-size: 36pt;
-	line-height: 12pt;
+	font-size: 22pt;
+	line-height: 1.1;
+	margin-top: 0.75rem;
+	margin-bottom: 0.4rem;
+}
+
+.photo-data p {
+	margin-top: 0;
+	font-size: 12pt;
 }
