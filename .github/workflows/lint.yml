@@ -6,15 +6,10 @@ jobs:
   lint:
     name: lint
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./lujan.io
-
     steps:
       - uses: actions/checkout@v3
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.4.3
           bundler-cache: true
-          working-directory: ./lujan.io
       - run: bundle exec rubocop .
