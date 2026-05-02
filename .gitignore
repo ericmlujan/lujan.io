@@ -38,6 +38,7 @@ jspm_packages
 
 # Secret stuff
 secrets/
+.env
 
 # OS X Finder bullshit
 .DS_Store
