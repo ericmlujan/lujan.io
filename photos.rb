@@ -51,7 +51,7 @@ class PhotosCache
     sorted_albums.each do |album|
       @albums[album[:slug]] = album
 
-      album[:photos].values.sort_by { |p| p[:display_index]&.to_i || 0 }.each do |photo|
+      album[:photos].values.sort_by { |p| p[:display_index].to_i }.each do |photo|
         # TODO: Annotating in the album dynamically to the hash like this isn't
         # terribly optimal. We should revisit the data abstractions here.
         photo[:album] = album[:slug]
