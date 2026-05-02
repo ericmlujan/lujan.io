@@ -46,12 +46,12 @@ class PhotosCache
     @photos = []
 
     albums_ref = @firestore.col(FIRESTORE_ALBUMS_COL)
-    albums = albums_ref.get
+    sorted_albums = albums_ref.get.sort_by { |album| album[:time] || Time.new(0) }.reverse
 
-    albums.each do |album|
+    sorted_albums.each do |album|
       @albums[album[:slug]] = album
 
-      album[:photos].each_value do |photo|
+      album[:photos].values.sort_by { |p| p[:display_index].to_i }.each do |photo|
         # TODO: Annotating in the album dynamically to the hash like this isn't
         # terribly optimal. We should revisit the data abstractions here.
         photo[:album] = album[:slug]
@@ -60,7 +60,6 @@ class PhotosCache
       end
     end
 
-    @photos.sort! { |a, b| a[:display_index] <=> b[:display_index] }
     @page_boundaries = compute_page_boundaries
   end
 
