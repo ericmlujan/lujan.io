@@ -15,7 +15,7 @@ body {
 .photography-brand {
 	display: inline-block;
 	font-family: "Jersey 10", sans-serif;
-	margin: 1em 0 1em 0;
+	margin: 1em 0 2em 0;
 	color: grey;
 	background-color: #ff4f00;
 	padding: 1rem;
@@ -35,20 +35,18 @@ body {
 	font-size: 3rem;
 }
 
-.gallery-container {
-	display: flex;
-	gap: 1rem;
+.gallery-sizer,
+.gallery-photo {
+	width: 32%;
 }
 
-.gallery-column {
-	display: flex;
-	flex-direction: column;
-	flex-grow: 1;
-	line-height: 0;
+.gallery-gutter-sizer {
+	width: 2%;
 }
 
 .gallery-photo {
-	margin-bottom: 1rem;
+	margin-bottom: 2%;
+	line-height: 0;
 }
 
 .gallery-photo img {

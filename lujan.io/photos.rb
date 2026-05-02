@@ -8,14 +8,17 @@ require 'google/cloud/firestore'
 FIRESTORE_ALBUMS_COL = 'albums'
 
 class PhotosCache
-  attr_reader :albums, :photos
+  attr_reader :albums, :photos, :page_boundaries
 
   CACHE_TTL = 1800 # s
+  GALLERY_COLUMNS = 3
+  GALLERY_PAGE_POOL = 20 # max photos offered to the balance algorithm per page
 
   def initialize(firestore)
     @firestore = firestore
     @albums = {}
     @photos = []
+    @page_boundaries = [0]
     @last_refreshed = Time.new(0)
   end
 
@@ -58,12 +61,55 @@ class PhotosCache
     end
 
     @photos.sort! { |a, b| a[:display_index] <=> b[:display_index] }
+    @page_boundaries = compute_page_boundaries
+  end
+
+  private
+
+  # Greedily assigns each photo to the shortest column and returns the count
+  # of photos at the point where column heights are most evenly balanced.
+  def best_column_balance(pool)
+    col_heights = Array.new(GALLERY_COLUMNS, 0.0)
+    min_spread = Float::INFINITY
+    best_count = pool.length
+    min_photos = GALLERY_COLUMNS * 2
+
+    pool.each_with_index do |photo, i|
+      ar = photo[:aspect_ratio]&.to_f || 1.5
+      col = col_heights.each_with_index.min_by { |h, _| h }[1]
+      col_heights[col] += 1.0 / ar
+
+      next if i + 1 < min_photos
+
+      max_h = col_heights.max
+      min_h = col_heights.min
+      spread = (max_h - min_h) / max_h
+
+      if spread < min_spread
+        min_spread = spread
+        best_count = i + 1
+      end
+    end
+
+    best_count
+  end
+
+  def compute_page_boundaries
+    boundaries = [0]
+
+    while (start = boundaries.last) < @photos.length
+      pool = @photos[start, GALLERY_PAGE_POOL]
+      break if pool.nil? || pool.empty?
+
+      count = best_column_balance(pool)
+      boundaries << start + count
+    end
+
+    boundaries
   end
 end
 
 class Photos
-  PHOTOS_PER_PAGE = 10
-
   def initialize
     @logger = Logger.new($stderr)
     unless ENV.include?('FIRESTORE_PROJECT')
@@ -81,15 +127,13 @@ class Photos
   end
 
   def photos_for_page(page_number)
-    photos = all_photos
-    lower = page_number * PHOTOS_PER_PAGE
-    upper = lower + PHOTOS_PER_PAGE
+    @cache.refresh
+    boundaries = @cache.page_boundaries
+    start = boundaries[page_number]
+    return [] if start.nil?
 
-    if lower >= photos.count
-      []
-    else
-      photos[lower...upper]
-    end
+    finish = boundaries[page_number + 1] || @cache.photos.length
+    @cache.photos[start...finish]
   end
 
   def get_photo(album_slug, photo_slug)
@@ -112,19 +156,7 @@ class Photos
   end
 
   def total_count_pages
-    (total_count_photos / PHOTOS_PER_PAGE).ceil
-  end
-
-  def columnarize(elems, n_columns)
-    columns = []
-    n_columns.times do
-      columns << []
-    end
-
-    elems.each_with_index do |value, index|
-      columns[index % n_columns].push(value)
-    end
-
-    columns
+    @cache.refresh
+    @cache.page_boundaries.length - 1
   end
 end
