@@ -92,11 +92,3 @@ Because I'm hip and modern (and like being able to test my deployments) Docker i
 $ cd lujan.io
 $ docker build . -t lujan.io
 ```
-
-Running with Let's Encrypt certificate refreshing and Nginx under docker-compose is also supported.
-
-```sh
-$ docker-compose build && docker-compose up
-```
-
-The Nginx config expects an SSL certificate to already be generated, so an [initial verification with Let's Encrypt](https://certbot.eff.org/instructions) using one of the available methods is required. Once the Certbot directory (the one that contains `live/`) is plunked in `secrets/`, Nginx should start without crashing and automatic certificate renewal with Certbot should work.
