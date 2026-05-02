@@ -102,7 +102,7 @@ class PhotosCache
       break if pool.nil? || pool.empty?
 
       count = best_column_balance(pool)
-      boundaries << start + count
+      boundaries << (start + count)
     end
 
     boundaries
