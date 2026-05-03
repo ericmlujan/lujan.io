@@ -6,7 +6,10 @@
     <% photos.each do |photo| %>
       <div class="gallery-photo">
         <a href="/photography/<%= photo[:album] %>/<%= photo[:slug] %>">
-          <img src="<%= photo[:thumbnail_path] %>" />
+          <picture>
+            <source srcset="<%= photo[:thumbnail_path].sub('thumbnail.jpg', 'thumbnail-optim.avif') %>" type="image/avif">
+            <img src="<%= photo[:thumbnail_path] %>" />
+          </picture>
         </a>
       </div>
     <% end %>
