@@ -91,9 +91,9 @@ def static_url(album_slug, photo_slug, variant)
   "#{STATIC_BASE_URL}/photography/#{album_slug}/#{photo_slug}/#{variant}.jpg"
 end
 
-def upload_file(r2_client, key, path, label)
+def upload_file(r2_client, key, path, label, content_type: 'image/jpeg')
   File.open(path, 'rb') do |f|
-    r2_client.put_object(bucket: ENV.fetch('R2_BUCKET'), key: key, body: f, content_type: 'image/jpeg')
+    r2_client.put_object(bucket: ENV.fetch('R2_BUCKET'), key: key, body: f, content_type: content_type)
   end
   puts "  uploaded #{label} → #{key}"
 end
@@ -138,6 +138,17 @@ def build_thumbnail(file)
   tmp
 end
 
+def build_thumbnail_avif(jpeg_thumbnail_path)
+  tmp = Tempfile.new([File.basename(jpeg_thumbnail_path, '.*'), '.avif'])
+  tmp.close
+
+  image = MiniMagick::Image.open(jpeg_thumbnail_path)
+  image.quality 75
+  image.write(tmp.path)
+
+  tmp
+end
+
 def print_photo_summary(photo)
   puts "  slug:          #{photo[:slug]}"
   puts "  name:          #{photo[:name]}"
@@ -150,15 +161,19 @@ def print_photo_summary(photo)
 end
 
 def upload_photo(r2_client, album_slug, photo, file)
-  original_key  = r2_key(album_slug, photo[:slug], 'original')
-  thumbnail_key = r2_key(album_slug, photo[:slug], 'thumbnail')
+  original_key      = r2_key(album_slug, photo[:slug], 'original')
+  thumbnail_key     = r2_key(album_slug, photo[:slug], 'thumbnail')
+  thumbnail_avif_key = "photography/#{album_slug}/#{photo[:slug]}/thumbnail-optim.avif"
 
   thumb = build_thumbnail(file)
+  thumb_avif = build_thumbnail_avif(thumb.path)
   begin
-    upload_file(r2_client, original_key,  file,       'original')
-    upload_file(r2_client, thumbnail_key, thumb.path, 'thumbnail')
+    upload_file(r2_client, original_key,       file,            'original')
+    upload_file(r2_client, thumbnail_key,      thumb.path,      'thumbnail')
+    upload_file(r2_client, thumbnail_avif_key, thumb_avif.path, 'thumbnail-optim.avif', content_type: 'image/avif')
   ensure
     thumb.unlink
+    thumb_avif.unlink
   end
 end
 
