@@ -253,7 +253,7 @@ def main
   write_album(firestore, opts, photos_map) unless dry_run
 
   elapsed = (Time.now - start_time).round(1)
-  puts "Done. #{jpegs.length} photo(s) in #{elapsed}s#{dry_run ? ' (dry run — nothing written)' : ''}."
+  puts "Done. #{jpegs.length} photo(s) in #{elapsed}s#{' (dry run — nothing written)' if dry_run}."
 end
 
 main

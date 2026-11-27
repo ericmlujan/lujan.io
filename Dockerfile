@@ -1,4 +1,4 @@
-FROM ruby:3.4.3
+FROM ruby:4.0.9
 
 # Setup application directory
 WORKDIR /usr/src/app
