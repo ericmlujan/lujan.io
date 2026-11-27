@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-ruby '3.4.3'
+ruby '4.0.9'
 source 'https://rubygems.org'
 
-gem 'google-cloud-firestore', '~> 3.0'
+gem 'google-cloud-firestore', '~> 3.3'
 gem 'google-cloud-storage', '~> 1.56'
 gem 'logger', '~>1.7'
 gem 'mime-types', '3.3.1'
